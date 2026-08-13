@@ -44,6 +44,41 @@ Blocked when last attempted: YouTube returned HTTP 429 to this host after the 19
 searches. Retry from an unthrottled address, pace it at a few seconds per video, and keep
 only the integer offset. Then rebuild `payload.json` and republish to the artifact URL above.
 
+## The registry site
+
+`site/` builds a fictional archive, the Central Declassification Registry, with Pale Chorus as
+the featured investigation and nine invented sibling programmes about ordinary petty grievances.
+
+    python3 site/build.py        # regenerates index.html and site/programmes/*.html
+
+Everything on the site is invented except Pale Chorus, whose song data is real. A colophon on
+every page states exactly that, so the joke never has to be explained and is never mistaken for
+a real claim.
+
+### Serving it at a domain, locally
+
+The "this is a real website" effect comes from a domain in the address bar, not from it being
+someone else's domain. Point a name you control, or an unregistered one, at your own machine:
+
+    # /etc/hosts
+    127.0.0.1   your-chosen-name.org
+
+    sudo python3 site/serve.py   # serves site/ on port 80
+
+Then open `http://your-chosen-name.org`. Remove the hosts line to undo it.
+
+Pick the name carefully. Confirm it is unregistered first, or use a `.test` name, which is
+reserved by IANA and can never resolve publicly. Keep it plain HTTP; `.dev` and `.app` are
+forced to HTTPS by browsers and will fail without a certificate. Do not point a hosts entry at
+a real organisation's domain: that fabricates a page in someone else's name, and the screenshot
+outlives the machine it was taken on.
+
+### Publishing it properly
+
+`site/` is a static directory, so GitHub Pages serves it as is. Repository settings, Pages,
+deploy from `main` and the `/site` folder. Attach a real domain if you want it to survive
+being forwarded.
+
 ## Findings
 
 | | |
