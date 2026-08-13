@@ -7,8 +7,8 @@ sourced from MusicBrainz. The colophon on every page says so.
 import html, os, pathlib
 
 ROOT = pathlib.Path(__file__).parent
-BAND_TOP = "Unclassified // Released in full // Public reading room"
-BAND_BOT = "Unclassified // Released in full // Registry updated continuously"
+BAND_TOP = "Unclassified // Released in full"
+BAND_BOT = "Public reading room"
 
 def esc(s): return html.escape(s, quote=False)
 
@@ -259,7 +259,6 @@ def dossier(p):
     <header class="dcover">
       <div>
         <div class="orig">{esc(p["office"])}</div>
-        <div class="prog">Programme {esc(p["name"])}</div>
         <h1>{esc(p["title"])}</h1>
         <p class="sub">{esc(p["deck"])}</p>
       </div>
@@ -302,9 +301,8 @@ def index():
       </a>""" for p in P)
     body = f"""  <div class="pad">
     <header class="mast">
-      <div class="mast-l">Central Declassification Registry</div>
-      <h1>Released assessments</h1>
-      <p class="sub">Ten programmes, declassified in full. Each was run for decades against a
+      <h1>Central Declassification Registry</h1>
+      <p class="sub">Ten programmes, released in full. Each was run for decades against a
       population that never filed a complaint, because none of them could prove anything.</p>
     </header>
   </div>
@@ -315,8 +313,8 @@ def index():
       <div class="f-grid">
         <div class="f-num">{FLAG['stat'][0]}</div>
         <div>
-          <div class="f-prog">Programme {esc(FLAG['name'])}</div>
           <h2 class="f-title">{esc(FLAG['title'])}</h2>
+          <div class="f-prog">Programme {esc(FLAG['name'])}, {esc(FLAG['office'])}</div>
           <p class="f-deck">{esc(FLAG['deck'])} {esc(FLAG['stat'][1].capitalize())}, 1968 to 2026,
             and the campaign is accelerating.</p>
           <span class="f-cta">Read the assessment</span>
