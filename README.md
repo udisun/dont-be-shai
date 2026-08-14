@@ -30,19 +30,34 @@ Run in this order: `fetch.py`, `analyze.py`, `build_payload.py`, `resolve2.py`, 
 
 ## Outstanding work: cue backfill
 
-136 of 195 rows have no timing. Current source is LRCLIB, which covers chart releases well
-and the long tail badly.
+136 of 195 rows have no cue time, and 23 more are approximate (shown with a tilde)
+because the timing came from the original release rather than that specific remix.
 
-The better source is the caption track on the specific YouTube video already linked in each
-row, which would be exact for that upload and would also retire the 23 approximate cues. It
-needs the signed `baseUrl` scraped from the watch page, because the standalone
-`/api/timedtext` endpoint returns nothing on its own:
+The fix is `scripts/cues_captions.py`, which reads the caption track of the exact
+YouTube video each row links to. A caption cue is exact for that upload, so it both
+fills the empty rows and upgrades the approximate ones.
 
-    watch page HTML -> "captionTracks":[...] -> baseUrl + "&fmt=json3" -> events[].tStartMs
+    python3 scripts/cues_captions.py --probe     # is this host blocked?
+    python3 scripts/cues_captions.py --dry-run   # resolve and report, write nothing
+    python3 scripts/cues_captions.py             # backfill data/payload.json
 
-Blocked when last attempted: YouTube returned HTTP 429 to this host after the 195 title
-searches. Retry from an unthrottled address, pace it at a few seconds per video, and keep
-only the integer offset. Then rebuild `payload.json` and republish to the artifact URL above.
+**Run it from a home connection.** It cannot run from a datacenter IP. Two attempts
+from a cloud host were refused with HTTP 429 on 6 of 7 requests, and slowing the pace
+to one video every 20 seconds made it worse rather than better, so this is a block on
+the address and not a pacing problem. The script stops itself after five consecutive
+429s and writes nothing.
+
+Note that the standalone `/api/timedtext` endpoint returns an empty body on its own.
+The signed `baseUrl` has to be scraped from the watch page HTML:
+
+    watch page -> "captionTracks":[...] -> baseUrl + "&fmt=json3" -> events[].tStartMs
+
+Coverage will not reach 195 even on a good run: many official music uploads have
+captions disabled entirely. Expect improvement, not completion.
+
+After a successful run, re-inject `data/payload.json` into `report.html` and update the
+coverage numbers in the Assessment paragraph, the Sourcing paragraph, the Known gaps
+list, and the footer line.
 
 ## The registry site
 
