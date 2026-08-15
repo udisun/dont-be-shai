@@ -98,13 +98,25 @@ being forwarded.
 
 | | |
 | --- | --- |
-| Distinct songs | 195 |
-| Artists | 149 |
+| Distinct songs | 220 |
+| Artists | 163 |
 | Span | 1968 to 2026 |
-| Rate, 1970s | 0.42 per year |
-| Rate, 2020s | 6.57 per year |
-| Escalation | 15.8x |
+| Rate, 1970s | 0.50 per year |
+| Rate, 2020s | 6.86 per year |
+| Escalation | 13.7x |
+| Peak | 13 in 2019 |
+| Identical wording | 230 of 251 titles |
+| Counter-movement | 8 songs |
 | Subjects removed | 0 |
+
+The corpus comes from searching MusicBrainz for the phrase "be shy" and keeping titles
+that carry a negated or instructional construction. Searching only the contracted form
+misses real entries, and apostrophes must be normalised before the negation test or
+curly-quote titles are silently dropped.
+
+Eight further songs argue the opposite position and are tracked separately, outside the
+220, in the Countermeasures section of the report.
+
 
 ## Licence
 
